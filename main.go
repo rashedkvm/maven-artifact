@@ -2,27 +2,28 @@ package main
 
 import (
 	"fmt"
-	"github/rashedkvm/maven-artifact/pkg/repository"
-	"os"
+	"github/rashedkvm/maven-artifact/pkg/mavenresolver"
 )
 
 func main() {
-	var url, isSet = os.LookupEnv("REPOSITORY_URL")
-	if !isSet {
-		fmt.Fprintf(os.Stderr, "Warning: Environment variable REPOSITORY_URL missing. Using default.\n")
-		url = `https://repo1.maven.org/maven2/HTTPClient/HTTPClient/maven-metadata.xml`
+
+	repo := mavenresolver.Repository{
+		// URL: `https://repo1.maven.org/maven2`,
+		URL:      `https://maven.pkg.github.com/rashedkvm/tanzu-java-web-app`,
+		Username: ``,
+		Password: ``,
 	}
 
-	cl := repository.Client()
-	resp, err := cl.Get(url)
-
-	if err != nil {
-		fmt.Printf("error from %q %v \n", url, err)
+	artifact := mavenresolver.Artifact{
+		Id:      "demo",
+		GroupId: "com.example",
+		Version: "0.0.1-SNAPSHOT",
 	}
 
-	if resp != nil {
-		defer resp.Body.Close()
+	if err := artifact.Resolve(&repo); err != nil {
+		fmt.Println(err)
 	}
 
-	fmt.Printf("url: %q \nhttp status: %q", url, resp.Status)
+	fmt.Println(artifact.MetaXML)
+	fmt.Println(artifact.ResolvedURL)
 }
