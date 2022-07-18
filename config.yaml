@@ -1,0 +1,8 @@
+config:
+  activeRepository: artifactory
+  registry:
+    - repository: 
+        name: test
+        url: http://localhost:8080
+        username: admin
+        password: *****

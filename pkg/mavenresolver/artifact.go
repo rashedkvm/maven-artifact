@@ -60,6 +60,13 @@ func (r *Artifact) Resolve(repo *Repository) error {
 		return fmt.Errorf("error processing metadata %v \n %v", string(body), err)
 	}
 
+	metaxmltemp, err := xml.MarshalIndent(metadata, "  ", "    ")
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(string(metaxmltemp))
+
 	fmt.Printf("url: %q \n status %q \n", metadataURL, resp.Status)
 
 	if strings.HasSuffix(r.Version, "-SNAPSHOT") {

@@ -3,21 +3,38 @@ package main
 import (
 	"fmt"
 	"github/rashedkvm/maven-artifact/pkg/mavenresolver"
+	"io"
+	"os"
 )
 
 func main() {
 
+	var configFile, useprovidedConfig = os.LookupEnv("MVN_CONFIG")
+
+	if useprovidedConfig == false {
+		configFile = "config.yaml"
+	}
+	var configReader io.Reader
+	f, err := os.Open(configFile)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	configReader = f
+	defer f.Close()
+
+	// Add code starting here
+
 	repo := mavenresolver.Repository{
-		// URL: `https://repo1.maven.org/maven2`,
-		URL:      `https://maven.pkg.github.com/rashedkvm/tanzu-java-web-app`,
+		URL:      `https://repo1.maven.org/maven2`,
 		Username: ``,
 		Password: ``,
 	}
 
 	artifact := mavenresolver.Artifact{
-		Id:      "demo",
-		GroupId: "com.example",
-		Version: "0.0.1-SNAPSHOT",
+		Id:      "java-hello-world",
+		GroupId: "com.maventest.app",
+		Version: "1.0.4-SNAPSHOT",
 	}
 
 	if err := artifact.Resolve(&repo); err != nil {
