@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github/rashedkvm/maven-artifact/pkg/configuration"
 	"github/rashedkvm/maven-artifact/pkg/mavenresolver"
-	"io"
 	"os"
 )
 
@@ -11,22 +11,24 @@ func main() {
 
 	var configFile, useprovidedConfig = os.LookupEnv("MVN_CONFIG")
 
-	if useprovidedConfig == false {
+	if !useprovidedConfig {
 		configFile = "config.yaml"
 	}
-	var configReader io.Reader
-	f, err := os.Open(configFile)
+	config, err := configuration.LoadNew(configFile)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	configReader = f
-	defer f.Close()
+
+	if config.Configuration.ActiveRepository == "" {
+		fmt.Println("no active repo in configuration")
+		os.Exit(1)
+	}
 
 	// Add code starting here
 
 	repo := mavenresolver.Repository{
-		URL:      `https://repo1.maven.org/maven2`,
+		URL:      config.Configuration.Registry[0].URL,
 		Username: ``,
 		Password: ``,
 	}
