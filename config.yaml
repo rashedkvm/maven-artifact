@@ -1,8 +1,13 @@
 config:
   activeRepository: artifactory
   registry:
-    - repository: 
-        name: test
-        url: http://localhost:8080
-        username: admin
-        password: password
+  - repository: 
+      name: test
+      url: http://192.168.1.86:8080
+      username: admin
+      password: secret
+  - repository:
+      name: test_2
+      url:
+      username: invalid
+      password: 12345

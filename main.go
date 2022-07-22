@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if config.Configuration.ActiveRepository == "" {
+	if config.Config.ActiveRepository == "" {
 		fmt.Println("no active repo in configuration")
 		os.Exit(1)
 	}
@@ -28,7 +28,7 @@ func main() {
 	// Add code starting here
 
 	repo := mavenresolver.Repository{
-		URL:      config.Configuration.Registry[0].URL,
+		URL:      config.Config.Registry[0].Repository.URL,
 		Username: ``,
 		Password: ``,
 	}

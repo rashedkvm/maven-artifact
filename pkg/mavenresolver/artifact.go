@@ -47,6 +47,7 @@ func (r *Artifact) Resolve(repo *Repository) error {
 	if err != nil {
 		return err
 	}
+	fmt.Printf("request httpstatus:%v\n", resp.StatusCode)
 
 	defer resp.Body.Close()
 
