@@ -20,23 +20,26 @@ func main() {
 		os.Exit(1)
 	}
 
-	if config.Config.ActiveRepository == "" {
+	if config.ActiveRepository == "" {
 		fmt.Println("no active repo in configuration")
 		os.Exit(1)
 	}
 
-	// Add code starting here
+	if config.ActiveRepo() == nil {
+		fmt.Println("configured active repo not defined")
+		os.Exit(1)
+	}
 
 	repo := mavenresolver.Repository{
-		URL:      config.Config.Registry[0].Repository.URL,
-		Username: ``,
-		Password: ``,
+		URL:      config.ActiveRepo().URL,
+		Username: config.ActiveRepo().Username,
+		Password: config.ActiveRepo().Password,
 	}
 
 	artifact := mavenresolver.Artifact{
 		Id:      "java-hello-world",
 		GroupId: "com.maventest.app",
-		Version: "1.0.4-SNAPSHOT",
+		Version: "1.0.6-SNAPSHOT",
 	}
 
 	if err := artifact.Resolve(&repo); err != nil {

@@ -24,7 +24,6 @@ type Artifact struct {
 }
 
 func (r *Artifact) Resolve(repo *Repository) error {
-
 	if repo == nil {
 		return fmt.Errorf("missing repo or artifact object")
 	}
@@ -32,7 +31,6 @@ func (r *Artifact) Resolve(repo *Repository) error {
 	groupIdSplit := strings.Split(r.GroupId, ".")
 
 	var metadataURL = fmt.Sprintf("%s/%s/%s/%s/maven-metadata.xml", repo.URL, strings.Join(groupIdSplit, "/"), r.Id, r.Version)
-
 	cl := repository.Client()
 
 	req, err := http.NewRequest("GET", metadataURL, nil)
